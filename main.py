@@ -1,30 +1,20 @@
-from typing import List, Annotated
-from fastapi import FastAPI, HTTPException, Request, Response, status, Depends, Query
-from pydantic import BaseModel, Field, ValidationError, validator
+from fastapi import FastAPI, Depends, APIRouter
+from asyncio import get_event_loop
 
-from fastapi.encoders import jsonable_encoder
-from fastapi.exceptions import RequestValidationError, ResponseValidationError
-from fastapi.responses import JSONResponse
-
-import models.models as models
-from databases.database import engine, sessionLocal
-from sqlalchemy.orm import Session
-from sqlalchemy import and_, func, not_, null, or_
-
+from hack_change.databases.db_init import init_db
+from hack_change.routes import documents_package
 
 app = FastAPI(
-    title="FastAPI App"
+    title="FastAPI App",
 )
-models.Base.metadata.create_all(bind=engine)
 
-def get_db():
-    db = sessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+app.include_router(documents_package.router)
 
-db_dependency = Annotated[Session, Depends(get_db)]
+loop = get_event_loop()
+loop.create_task(init_db())
 
-class Application(BaseModel):
-    pass
+
+
+
+
+
