@@ -4,7 +4,7 @@ import enum, re
 from fastapi import UploadFile, Form, APIRouter
 from pydantic import BaseModel, Field, validator
 
-from hack_change.functions.archiver import is_file_in_archive
+from functions.archiver import is_file_in_archive
 
 class City(enum.Enum):
     moscow = 'Москва'
@@ -12,7 +12,8 @@ class City(enum.Enum):
 
 class FamilyStatus(enum.Enum):
     single = 'Холост'
-    married = 'Женат'
+    married = 'Женат/Замужем'
+    devorced = 'В разводе'
 
 class HasChild(enum.Enum):
     yes = 'Да'
@@ -33,6 +34,8 @@ class BidParticipantInfo(BaseModel):
     has_child: HasChild
     work_place: str
     work_position: str
+    work_experience_year: int
+    work_experience_month: int
     official_work_monthly_income: float
     official_income_proof: bool
     monthly_add_income: float
