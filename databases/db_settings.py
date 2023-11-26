@@ -1,12 +1,12 @@
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase
-
-from hack_change.config import settings
+from sqlalchemy import MetaData
+from config import settings
 
 class Base(DeclarativeBase):
-    pass
+    metadata = MetaData()
 
-engine = create_async_engine(settings.DB_URL)
+
+engine = create_async_engine(settings.DB_URL())
+
 async_session_factory = async_sessionmaker(engine, expire_on_commit=False)
-
-
