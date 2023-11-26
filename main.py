@@ -7,7 +7,7 @@ sys.path.insert(1, os.path.join(sys.path[0], 'hack_change'))
 
 from databases.db_init import init_db
 from routes import documents_package
-from logger import loger
+
 
 app = FastAPI(
     title="FastAPI App",
