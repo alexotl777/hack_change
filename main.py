@@ -1,8 +1,13 @@
+import sys, os
+import logging
+import uvicorn
 from fastapi import FastAPI, Depends, APIRouter
 from asyncio import get_event_loop
+sys.path.insert(1, os.path.join(sys.path[0], 'hack_change'))
 
-from hack_change.databases.db_init import init_db
-from hack_change.routes import documents_package
+from databases.db_init import init_db
+from routes import documents_package
+from logger import loger
 
 app = FastAPI(
     title="FastAPI App",
@@ -11,8 +16,12 @@ app = FastAPI(
 app.include_router(documents_package.router)
 
 loop = get_event_loop()
+
 loop.create_task(init_db())
 
+
+if __name__ == '__main__':
+    uvicorn.run(app, host="127.0.0.1", port=80)
 
 
 
